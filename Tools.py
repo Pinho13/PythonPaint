@@ -37,6 +37,7 @@ class Tool(pg.sprite.Sprite):
         self.rect = self.image.get_rect(center=self.pos)
 
         self.tool_type = tool_type
+        self.can_click_to_change = True
 
     def tool_use(self, mouse_pos, surf, tiles):
         if self.rect.collidepoint(mouse_pos):
@@ -48,15 +49,27 @@ class Tool(pg.sprite.Sprite):
                         self.change_pen("rubber", tiles)
                     case 2:
                         self.save(surf)
+                    case 3:
+                        self.change_pensize(True, tiles)
+                    case 4:
+                        self.change_pensize(False, tiles)
 
     @staticmethod
     def change_pen(pen, tiles):
-            tiles.pen_type = pen
+        tiles.pen_type = pen
 
     @staticmethod
     def save(surf):
         name = input("Name: ")
         pg.image.save(surf, name + ".png")
+
+    def change_pensize(self, change, tiles):
+        if self.can_click_to_change:
+            if change:
+                tiles.pen_size += 1
+            elif tiles.pen_size > 1:
+                tiles.pen_size -= 1
+            self.can_click_to_change = False
 
 
 class Setup:

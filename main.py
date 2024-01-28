@@ -15,7 +15,6 @@ class Game:
         self.screen = pg.display.set_mode((WIDTH + 50, HEIGHT + 50))
         pg.display.set_caption("Python Paint")
         self.mouse_pos = Vector2(pg.mouse.get_pos())
-        self.delta_time = 0
         self.tiles = Tiles()
         self.tools = Setup()
         self.background = pg.Surface(RES, pygame.SRCALPHA)
@@ -27,9 +26,12 @@ class Game:
             if event.type == pg.QUIT:
                 pg.quit()
                 sys.exit()
+            if event.type == pg.MOUSEBUTTONUP:
+                for tool in tools:
+                    if isinstance(tool, Tool):
+                        tool.can_click_to_change = True
 
     def update(self):
-        self.delta_time = pg.time.Clock().tick(60) / 1000
         self.mouse_pos = Vector2(pg.mouse.get_pos())
         self.screen.fill(BACKGROUND_COLOR)
         self.screen.blit(self.background, (0, 0))
@@ -43,6 +45,9 @@ class Game:
                     self.tiles.selected_color = tool.color
             if isinstance(tool, Tool):
                 tool.tool_use(self.mouse_pos, self.background, self.tiles)
+                for event in pg.event.get():
+                    if event.type == pg.MOUSEBUTTONUP:
+                        tool.can_click_to_change = True
         pg.display.update()
 
     def redraw_background(self):

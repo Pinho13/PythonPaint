@@ -39,12 +39,13 @@ class Tiles:
         self.coordinates()
         self.previewer = Tile((0, 0), self.size, self.selected_color)
         self.pen_type = "pen"
+        self.pen_size = 1
 
     def coordinates(self):
         for i in range(1, NUMBER_OF_UNITS+1):
             for j in range(1, NUMBER_OF_UNITS+1):
                 self.cords.append(Vector2((self.size.x * i) - (self.size.x/2), (self.size.y * j) - (self.size.y/2)))
-                #self.add_tiles()
+                #self.add_tiles() # noqa
 
     def add_tiles(self):
         for i in self.cords:
@@ -53,7 +54,7 @@ class Tiles:
     def paint_tiles(self, mouse_pos, redraw_background, background):
         self.previewer.preview_col(self.selected_color)
         for i in self.cords:
-            if abs(i.x-mouse_pos.x) < self.size.x/2 and abs(i.y-mouse_pos.y) < self.size.y/2:
+            if abs(i.x-mouse_pos.x) < (self.size.x/2) * self.pen_size and abs(i.y-mouse_pos.y) < (self.size.y/2) * self.pen_size and mouse_pos.x < WIDTH and mouse_pos.y < HEIGHT:
                 self.previewer.pos = i
                 if pygame.mouse.get_pressed()[0]:
                     if self.pen_type == "pen":
