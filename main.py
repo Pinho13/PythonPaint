@@ -19,14 +19,17 @@ class Game:
         self.tools = Setup()
         self.background = pg.Surface(RES, pygame.SRCALPHA)
         self.background.get_rect(center=(WIDTH/2, HEIGHT/2))
+        self.clock = pg.Clock()
+        self.events = pg.event.get()
 
-    @staticmethod
-    def check_events():
-        for event in pg.event.get():
+    def check_events(self):
+        self.clock.tick(60)
+        self.events = pg.event.get()
+        for event in self.events:
             if event.type == pg.QUIT:
                 pg.quit()
                 sys.exit()
-            if event.type == pg.MOUSEBUTTONUP:
+            elif event.type == pg.MOUSEBUTTONUP:
                 for tool in tools:
                     if isinstance(tool, Tool):
                         tool.can_click_to_change = True
@@ -43,11 +46,8 @@ class Game:
             if isinstance(tool, Color):
                 if tool.choose_color(self.mouse_pos):
                     self.tiles.selected_color = tool.color
-            if isinstance(tool, Tool):
+            elif isinstance(tool, Tool):
                 tool.tool_use(self.mouse_pos, self.background, self.tiles)
-                for event in pg.event.get():
-                    if event.type == pg.MOUSEBUTTONUP:
-                        tool.can_click_to_change = True
         pg.display.update()
 
     def redraw_background(self):
