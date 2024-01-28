@@ -38,6 +38,7 @@ class Tiles:
         self.cords = []
         self.coordinates()
         self.previewer = Tile((0, 0), self.size, self.selected_color)
+        self.pen_type = "pen"
 
     def coordinates(self):
         for i in range(1, NUMBER_OF_UNITS+1):
@@ -49,11 +50,18 @@ class Tiles:
         for i in self.cords:
             sprites.add(Tile(i, self.size, (255, 255, 255)))# noqa
 
-    def paint_tiles(self, mouse_pos):
+    def paint_tiles(self, mouse_pos, redraw_background, background):
         self.previewer.preview_col(self.selected_color)
         for i in self.cords:
             if abs(i.x-mouse_pos.x) < self.size.x/2 and abs(i.y-mouse_pos.y) < self.size.y/2:
                 self.previewer.pos = i
                 if pygame.mouse.get_pressed()[0]:
-                    sprites.add(Tile(i, self.size, self.selected_color))# noqa
-
+                    if self.pen_type == "pen":
+                        sprites.add(Tile(i, self.size, self.selected_color))# noqa
+                    elif self.pen_type == "rubber":
+                        for sprite in sprites.sprites():
+                            if isinstance(sprite, Tile):
+                                if sprite.pos == i:
+                                    sprites.remove(sprite)# noqa
+                                    redraw_background()
+                                    sprites.draw(background)
