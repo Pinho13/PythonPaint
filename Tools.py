@@ -48,11 +48,13 @@ class Tool(pg.sprite.Sprite):
                     case 1:
                         self.change_pen("rubber", tiles)
                     case 2:
-                        self.save(surf)
+                        self.change_pen("bucket", tiles)
                     case 3:
                         self.change_pensize(True, tiles)
                     case 4:
                         self.change_pensize(False, tiles)
+                    case 5:
+                        self.save(surf)
 
     @staticmethod
     def change_pen(pen, tiles):

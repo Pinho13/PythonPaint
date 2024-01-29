@@ -66,3 +66,22 @@ class Tiles:
                                     sprites.remove(sprite)# noqa
                                     redraw_background()
                                     sprites.draw(background)
+                    elif self.pen_type == "bucket":
+                        color = ""
+                        for sprite in sprites.sprites():
+                            if isinstance(sprite, Tile):
+                                if sprite.pos == i:
+                                    color = sprite.color
+                        if color == "":
+                            for j in self.cords:
+                                can_paint = True
+                                for sprite in sprites.sprites():
+                                    if j == sprite.pos:
+                                        can_paint = False
+                                if can_paint:
+                                    sprites.add(Tile(j, self.size, self.selected_color))  # noqa
+                        else:
+                            for sprite in sprites.sprites():
+                                if isinstance(sprite, Tile) and sprite.color == color:
+                                    sprites.add(Tile(sprite.pos, self.size, self.selected_color))  # noqa
+
