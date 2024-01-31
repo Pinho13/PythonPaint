@@ -48,6 +48,8 @@ class Game:
                     self.tiles.selected_color = tool.color
             elif isinstance(tool, Tool):
                 tool.tool_use(self.mouse_pos, self.background, self.tiles)
+            elif isinstance(tool, Text):
+                tool.update(self.tiles.pen_size)
         pg.display.update()
 
     def redraw_background(self):

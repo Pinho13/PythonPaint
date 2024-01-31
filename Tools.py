@@ -9,6 +9,21 @@ from DrawTiles import *
 tools = pg.sprite.Group()
 
 
+class Text(pg.sprite.Sprite):
+    def __init__(self, pos, size):
+        super().__init__()
+
+        self.pos = pos
+
+        self.text_font = pg.font.SysFont(None, int(size/1.5))# noqa
+        self.image = self.text_font.render("1", True, (0, 0, 0))
+        self.rect = self.image.get_rect(center=pos)
+
+    def update(self, number):
+        self.rect = self.image.get_rect(center=self.pos)
+        self.image = self.text_font.render(str(number), True, (0, 0, 0))
+
+
 class Color(pg.sprite.Sprite):
     def __init__(self, pos, size, color):
         super().__init__()
@@ -88,10 +103,12 @@ class Setup:
             self.cords_of_colors.append((self.size.x * i + self.size.x/2, HEIGHT + 25))
 
         for i in range(self.num_of_tools):
-            self.cords_of_tools.append((WIDTH + 25, self.size.y * i + self.size.y/2))
+            self.cords_of_tools.append(Vector2(WIDTH + 25, self.size.y * i + self.size.y/2))
 
         for i, cords in enumerate(self.cords_of_colors):
             tools.add(Color(cords, Vector2(25, 25), COLOR_PALLET[i]))# noqa
 
         for i, cord in enumerate(self.cords_of_tools):
             tools.add(Tool(cord, Vector2(35, 35), i, UI_IMAGES[i]))# noqa
+            if i == 3:
+                tools.add(Text(Vector2(cord.x, cord.y + self.size.y/2), self.size.x))# noqa
