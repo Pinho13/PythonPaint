@@ -84,4 +84,10 @@ class Tiles:
                             for sprite in sprites.sprites():
                                 if isinstance(sprite, Tile) and sprite.color == color:
                                     sprites.add(Tile(sprite.pos, self.size, self.selected_color))  # noqa
+            if self.pen_type == "trash":
+                for sprite in sprites.sprites():
+                    sprites.remove(sprite)
+                redraw_background()
+                sprites.draw(background)
+                self.pen_type = "pen"
 

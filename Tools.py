@@ -69,6 +69,8 @@ class Tool(pg.sprite.Sprite):
                     case 4:
                         self.change_pensize(False, tiles)
                     case 5:
+                        self.change_pen("trash", tiles)
+                    case 6:
                         self.save(surf)
 
     @staticmethod
