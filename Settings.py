@@ -1,5 +1,3 @@
-import pygame
-
 RES = WIDTH, HEIGHT = (600, 600)
 NUMBER_OF_UNITS = 10
 
